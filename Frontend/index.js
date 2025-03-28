@@ -55,5 +55,5 @@ const uploadFile = () => {
 
 const updateProgress = (event) => {
     const percent = Math.round((event.loaded / event.total) * 100); 
-    console.log(event);
+    console.log(percent);
 }
