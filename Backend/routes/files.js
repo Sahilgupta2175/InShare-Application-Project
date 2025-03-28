@@ -3,15 +3,10 @@ const multer = require('multer');
 const path = require('path');
 const File = require('../models/file');
 const { v4: uuid4 } = require('uuid');
-const fs = require('fs');
 
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadPath = path.join(__dirname, '../uploads/');
-        if (!fs.existsSync(uploadPath)) {
-            fs.mkdirSync(uploadPath, { recursive: true });
-        }
-        cb(null, uploadPath);
+        cb(null, 'uploads/');
     },
     filename: (req, file, cb) => {
         const uniqueName = file.originalname;
