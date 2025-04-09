@@ -13,12 +13,12 @@ app.set('view engine', 'ejs');
 
 // Middleware
 app.use(express.static(path.join(__dirname, './public')));
+app.use(express.static(path.join(__dirname, '../Frontend')));
 app.use(express.json());
 
 // Routes
 app.use('/api/files', require('./routes/files'));
 app.use('/files', require('./routes/show'));
-
 app.use('/files/download', require('./routes/download'));
 
 app.listen(port, () => {
