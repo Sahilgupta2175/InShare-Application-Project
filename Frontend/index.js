@@ -5,6 +5,9 @@ const progressContainer = document.querySelector('.progress-container');
 const bgProgress = document.querySelector('.bg-progress');
 const progressBar = document.querySelector('.progress-bar');
 const precentDiv = document.querySelector('#percent');
+const fileURLInput = document.querySelector('#fileURL');
+const sharingContainer = document.querySelector(".sharing-container");
+const copyBtn = document.querySelector("#copy-btn");
 
 const host = "";
 const uploadURL = `/api/files`;
@@ -39,7 +42,12 @@ browseBtn.addEventListener("click", () => {
     fileInput.click();
 });
 
-const uploadFile = () => {
+copyBtn.addEventListener("click", () => {
+    fileURLInput.select();
+    document.execCommand("copy");
+});
+
+function uploadFile() {
     progressContainer.style.display = "block";
     const file = fileInput.files[0];
     const formData = new FormData();
@@ -47,7 +55,7 @@ const uploadFile = () => {
 
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = () => {
-        if(xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
             console.log(xhr.response);
             showLink(JSON.parse(xhr.response));
         }
@@ -67,7 +75,9 @@ const updateProgress = (event) => {
     progressBar.style.transform = `scaleX(${percent / 100})`;
 }
 
-const showLink = ({file}) => {
-    console.log(file);
+const showLink = ({ file: url }) => {
+    console.log(url);
     progressContainer.style.display = "none";
+    sharingContainer.style.display = "block";
+    fileURLInput.value = url;
 }
