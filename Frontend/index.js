@@ -10,6 +10,7 @@ const sharingContainer = document.querySelector(".sharing-container");
 const copyBtn = document.querySelector("#copy-btn");
 const emailForm = document.querySelector("#email-form");
 const toast = document.querySelector(".toast");
+const maxAllowedSize = 100 * 1024 * 1024; // 100MB
 
 const host = "";
 const uploadURL = `/api/files`;
@@ -51,9 +52,22 @@ copyBtn.addEventListener("click", () => {
     showToast("Link copied to clipboard");
 });
 
-function uploadFile() {
-    progressContainer.style.display = "block";
+const uploadFile = () => {
+    if (fileInput.files.length > 1) { 
+        resetFIleInput();
+        showToast("Only Upload 1 file!")
+        return;
+    }
+
     const file = fileInput.files[0];
+
+    if (file.size > maxAllowedSize) {
+        resetFIleInput();
+        showToast("Can't Upload more than 100MB");
+        return;
+    }
+
+    progressContainer.style.display = "block";
     const formData = new FormData();
     formData.append("myfile", file);
 
@@ -68,7 +82,7 @@ function uploadFile() {
     xhr.upload.onprogress = updateProgress;
 
     xhr.upload.onerror = () => {
-        fileInput.value = "";
+        resetFIleInput();
         showToast(`Error in upload: ${xhr.statusText}`);
     }
 
@@ -86,11 +100,15 @@ const updateProgress = (event) => {
 
 const onUploadSuccess = ({ file: url }) => {
     console.log(url);
-    fileInput.value = "";
+    resetFIleInput();
     emailForm[2].removeAttribute("disabled");
     progressContainer.style.display = "none";
     sharingContainer.style.display = "block";
     fileURLInput.value = url;
+}
+
+const resetFIleInput = () => {
+    fileInput.value = "";
 }
 
 emailForm.addEventListener("submit", (event) => {
