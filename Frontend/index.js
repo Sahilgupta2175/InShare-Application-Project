@@ -8,9 +8,11 @@ const precentDiv = document.querySelector('#percent');
 const fileURLInput = document.querySelector('#fileURL');
 const sharingContainer = document.querySelector(".sharing-container");
 const copyBtn = document.querySelector("#copy-btn");
+const emailForm = document.querySelector("#email-form");
 
 const host = "";
 const uploadURL = `/api/files`;
+const emailURL = `/api/files/send`;
 
 dropZone.addEventListener("dragover", (event) => {
     event.preventDefault();
@@ -81,3 +83,16 @@ const showLink = ({ file: url }) => {
     sharingContainer.style.display = "block";
     fileURLInput.value = url;
 }
+
+emailForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    console.log("Submit form");
+    const url = fileURLInput.value;
+
+    const formData = {
+        uuid: url.split("/").slice(-1)[0],
+        emailTo: emailForm.elements["to-email"].value,
+        emailForm: emailForm.elements["from-email"].value,
+    };
+    console.table(formData);
+});

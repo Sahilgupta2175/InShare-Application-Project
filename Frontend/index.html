@@ -32,6 +32,20 @@
                 <input type="text" id="fileURL" readonly>
                 <img src="./images/copy.svg" alt="Copy Logo" id="copy-btn">
             </div>
+            <p>Or send Via Email</p>
+            <div class="email-container">
+                <form id="email-form">
+                    <div class="field">
+                        <label for="sender">Your email</label>
+                        <input type="email" required name="from-email" id="sender">
+                    </div>
+                    <div class="field">
+                        <label for="receiver">Receiver's email</label>
+                        <input type="email" required name="to-email" id="receiver">
+                    </div>
+                    <button type="submit">Send</button>
+                </form>
+            </div>
         </div>
     </section>
 
