@@ -59,7 +59,7 @@ function uploadFile() {
     xhr.onreadystatechange = () => {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             console.log(xhr.response);
-            showLink(JSON.parse(xhr.response));
+            onUploadSuccess(JSON.parse(xhr.response));
         }
     };
 
@@ -77,8 +77,10 @@ const updateProgress = (event) => {
     progressBar.style.transform = `scaleX(${percent / 100})`;
 }
 
-const showLink = ({ file: url }) => {
+const onUploadSuccess = ({ file: url }) => {
     console.log(url);
+    fileInput.value = "";
+    emailForm[2].removeAttribute("disabled");
     progressContainer.style.display = "none";
     sharingContainer.style.display = "block";
     fileURLInput.value = url;
@@ -92,7 +94,25 @@ emailForm.addEventListener("submit", (event) => {
     const formData = {
         uuid: url.split("/").slice(-1)[0],
         emailTo: emailForm.elements["to-email"].value,
-        emailForm: emailForm.elements["from-email"].value,
+        emailFrom: emailForm.elements["from-email"].value,
     };
     console.table(formData);
+
+    emailForm[2].setAttribute("disabled", "true");
+
+    fetch(emailURL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+    }).then((res) => {
+        return res.json();
+    }).then((success) => {
+        // console.log(data);
+
+        if (success) {
+            sharingContainer.style.display = "none";
+        }
+    });
 });
