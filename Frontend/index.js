@@ -9,6 +9,7 @@ const fileURLInput = document.querySelector('#fileURL');
 const sharingContainer = document.querySelector(".sharing-container");
 const copyBtn = document.querySelector("#copy-btn");
 const emailForm = document.querySelector("#email-form");
+const toast = document.querySelector(".toast");
 
 const host = "";
 const uploadURL = `/api/files`;
@@ -47,6 +48,7 @@ browseBtn.addEventListener("click", () => {
 copyBtn.addEventListener("click", () => {
     fileURLInput.select();
     document.execCommand("copy");
+    showToast("Link copied to clipboard");
 });
 
 function uploadFile() {
@@ -64,6 +66,11 @@ function uploadFile() {
     };
 
     xhr.upload.onprogress = updateProgress;
+
+    xhr.upload.onerror = () => {
+        fileInput.value = "";
+        showToast(`Error in upload: ${xhr.statusText}`);
+    }
 
     xhr.open("POST", uploadURL);
     xhr.send(formData);
@@ -113,6 +120,18 @@ emailForm.addEventListener("submit", (event) => {
 
         if (success) {
             sharingContainer.style.display = "none";
+            showToast("Email sent successfully");
         }
     });
 });
+
+let toastTimer;
+const showToast = (msg) => {
+    toast.innerText = msg;
+    toast.style.transform = "translate(-50%, 0)";
+
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+        toast.style.transform = "translate(-50%, 60px)"; 
+    }, 2000);
+}

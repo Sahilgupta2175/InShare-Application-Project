@@ -10,6 +10,7 @@ body, html {
     height: 100%;
     padding: 0;
     margin: 0;
+    overflow: hidden;
 }
 
 body, .drop-zone, .upload-container {
@@ -205,4 +206,18 @@ p {
     border-radius: 5px;
     color: #607d8b;
     cursor: pointer;
+}
+
+.toast {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translate(-50%, 60px);
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: #03a9f4;
+    color: #ffffff;
+    font-size: 18px;
+    transition: transform ease-in-out 0.2s;
+    box-shadow: 0px 10px 15px -3px #0000001a, 0px 4px 6px -2px #0000000d;
 }
