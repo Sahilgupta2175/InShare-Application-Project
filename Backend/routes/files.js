@@ -58,8 +58,11 @@ router.post('/send', async (req, res) => {
 
     // Get data from database
     const file = await File.findOne({uuid: uuid});
-    if(file.sender) {
-        return res.status(422).send({error: 'Email already sent.'});
+    if (!file) {
+        return res.status(404).send({ error: 'File not found.' });
+    }
+    if (file.sender) {
+        return res.status(422).send({ error: 'Email already sent.' });
     }
     
     file.sender = emailSender;
