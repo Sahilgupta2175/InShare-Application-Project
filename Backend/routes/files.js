@@ -42,7 +42,7 @@ router.post('/', (req, res) => {
         const response = await file.save();
         return res.json({
             // url = http://localhost:8080/files/046522405-20skjhd2047.png
-            file: `https://inshare-application-project.onrender.com/files/${response.uuid}`
+            file: `${process.env.APP_BASE_URL}/files/${response.uuid}`
         });
     });
 });
@@ -75,7 +75,7 @@ router.post('/send', async (req, res) => {
         text: `${emailSender} shared a file with you.`,
         html: require('../services/emailTemplate')({
             emailFrom: emailSender,
-            downloadLink: `https://inshare-application-project.onrender.com/files/${file.uuid}`,
+            downloadLink: `${process.env.APP_BASE_URL}/files/${file.uuid}`,
             size: parseInt(file.size/1000) + ' KB',
             expires: '24 hours'
         })
