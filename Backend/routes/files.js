@@ -42,7 +42,7 @@ router.post('/', (req, res) => {
         const response = await file.save();
         return res.json({
             // url = http://localhost:8080/files/046522405-20skjhd2047.png
-            file: `${process.env.APP_BASE_URL}/files/${response.uuid}`
+            file: `https://inshare-application-project.onrender.com/files/${response.uuid}`
         });
     });
 });
